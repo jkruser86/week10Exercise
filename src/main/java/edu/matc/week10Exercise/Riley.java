@@ -1,6 +1,9 @@
 package edu.matc.week10Exercise;
 
+import org.apache.log4j.Logger;
+
 public class Riley implements Runnable {
+    private final Logger log = Logger.getLogger(this.getClass());
     private House house;
 
     public Riley(House house) {
@@ -9,7 +12,7 @@ public class Riley implements Runnable {
 
     public void run() {
 
-        System.out.println("Trick-Or-Treating begins");
+        log.info("Trick-Or-Treating begins");
 
         while(true) {
             house.giveCandy();

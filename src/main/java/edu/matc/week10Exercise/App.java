@@ -11,11 +11,11 @@ public class App
         House house = new House();
 
         Riley riley = new Riley(house);
+        Thread thriley = new Thread(riley);
+        thriley.start();
         TrickOrTreaterGenerator generator = new TrickOrTreaterGenerator(house);
 
-        Thread thriley = new Thread(riley);
         Thread thgenerator = new Thread(generator);
         thgenerator.start();
-        thriley.start();
     }
 }

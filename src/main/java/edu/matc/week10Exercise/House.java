@@ -1,10 +1,13 @@
 package edu.matc.week10Exercise;
 
+import org.apache.log4j.Logger;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class House {
+    private final Logger log = Logger.getLogger(this.getClass());
     private int maxLineLength;
     private List<TrickOrTreater> listTreater;
 
@@ -17,11 +20,11 @@ public class House {
         TrickOrTreater treater;
         synchronized (listTreater) {
             while(listTreater.size() == 0) {
-                System.out.println("Riley watches TV");
+                log.info("Riley watches TV");
                 try {
                     listTreater.wait();
                 } catch (InterruptedException ie) {
-                    ie.printStackTrace();
+                    log.error("Issue in giveCandy", ie);
                 }
             }
 
@@ -31,27 +34,27 @@ public class House {
         long duration = 0;
 
         try {
-            System.out.println("Riley answers the door for " + treater.getName());
+            log.info("Riley answers the door for " + treater.getName());
             duration = (long)(Math.random() * 10);
             TimeUnit.SECONDS.sleep(duration);
         } catch (InterruptedException ie) {
-            ie.printStackTrace();
+            log.error("Issue in giveCandy 2", ie);
         }
 
-        System.out.println("Riley gives candy to " + treater.getName());
+        log.info("Riley gives candy to " + treater.getName());
     }
 
     public void add(TrickOrTreater treater) {
-        System.out.println(treater.getName() + " rings doorbell");
+        log.info(treater.getName() + " rings doorbell");
 
         synchronized (listTreater) {
             if(listTreater.size() == maxLineLength) {
-                System.out.println(treater.getName() + " left");
+                log.info(treater.getName() + " left");
                 return;
             }
 
             ((LinkedList<TrickOrTreater>)listTreater).offer(treater);
-            System.out.println(treater.getName() + " is in line");
+            log.info(treater.getName() + " is in line");
 
             if(listTreater.size() == 1) {
                 listTreater.notify();
